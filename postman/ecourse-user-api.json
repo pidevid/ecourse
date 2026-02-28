@@ -5,8 +5,16 @@
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
-    { "key": "base_url", "value": "http://localhost:8080/api", "type": "string" },
-    { "key": "token",    "value": "",                           "type": "string" }
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080/api",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
   ],
   "item": [
     {
@@ -19,11 +27,20 @@
               "name": "GET — List Kategori",
               "request": {
                 "method": "GET",
-                "header": [{ "key": "Accept", "value": "application/json" }],
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
                 "url": {
                   "raw": "{{base_url}}/categories",
-                  "host": ["{{base_url}}"],
-                  "path": ["categories"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "categories"
+                  ]
                 },
                 "description": "Semua kategori kursus beserta jumlah kursus. Bisa diakses tanpa login."
               }
@@ -37,14 +54,31 @@
               "name": "GET — Catalog Kursus",
               "request": {
                 "method": "GET",
-                "header": [{ "key": "Accept", "value": "application/json" }],
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
                 "url": {
                   "raw": "{{base_url}}/courses?search=&category=",
-                  "host": ["{{base_url}}"],
-                  "path": ["courses"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "courses"
+                  ],
                   "query": [
-                    { "key": "search",   "value": "", "description": "Cari berdasarkan nama kursus" },
-                    { "key": "category", "value": "", "description": "Filter berdasarkan slug kategori" }
+                    {
+                      "key": "search",
+                      "value": "",
+                      "description": "Cari berdasarkan nama kursus"
+                    },
+                    {
+                      "key": "category",
+                      "value": "",
+                      "description": "Filter berdasarkan slug kategori"
+                    }
                   ]
                 },
                 "description": "List semua kursus yang sudah approved. Filter: ?search=nama&category=slug"
@@ -54,11 +88,21 @@
               "name": "GET — Detail Kursus + Episode",
               "request": {
                 "method": "GET",
-                "header": [{ "key": "Accept", "value": "application/json" }],
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
                 "url": {
                   "raw": "{{base_url}}/courses/laravel-vue",
-                  "host": ["{{base_url}}"],
-                  "path": ["courses", "laravel-vue"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "courses",
+                    "laravel-vue"
+                  ]
                 },
                 "description": "Detail kursus + episode + review. Episode premium: video_code = null untuk guest (harus beli dulu). Ganti slug sesuai kursus."
               }
@@ -72,13 +116,26 @@
               "name": "GET — List Showcase",
               "request": {
                 "method": "GET",
-                "header": [{ "key": "Accept", "value": "application/json" }],
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
                 "url": {
                   "raw": "{{base_url}}/showcases?search=",
-                  "host": ["{{base_url}}"],
-                  "path": ["showcases"],
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "showcases"
+                  ],
                   "query": [
-                    { "key": "search", "value": "", "description": "Cari berdasarkan judul" }
+                    {
+                      "key": "search",
+                      "value": "",
+                      "description": "Cari berdasarkan judul"
+                    }
                   ]
                 },
                 "description": "Semua project showcase dari semua user. Bisa diakses tanpa login."
@@ -93,11 +150,21 @@
               "name": "GET — Portfolio by Username",
               "request": {
                 "method": "GET",
-                "header": [{ "key": "Accept", "value": "application/json" }],
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
                 "url": {
                   "raw": "{{base_url}}/portfolio/saeful",
-                  "host": ["{{base_url}}"],
-                  "path": ["portfolio", "saeful"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "portfolio",
+                    "saeful"
+                  ]
                 },
                 "description": "Data personal website/portfolio user. Hanya yang is_published=true. Ganti 'saeful' dengan username."
               }
@@ -110,6 +177,37 @@
       "name": "🔐 Auth",
       "item": [
         {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"johndoe@example.com\",\n  \"password\": \"password123\",\n  \"password_confirmation\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Daftar akun baru. Role otomatis: member. Email verifikasi dikirim otomatis."
+          }
+        },
+        {
           "name": "Login",
           "event": [
             {
@@ -118,8 +216,8 @@
                 "exec": [
                   "const res = pm.response.json();",
                   "if (res.token) {",
-                  "  pm.collectionVariables.set('token', res.token);",
-                  "  console.log('Token tersimpan:', res.token);",
+                  "  pm.collectionVariables.set(\"token\", res.token);",
+                  "  console.log(\"Token tersimpan:\", res.token);",
                   "}"
                 ],
                 "type": "text/javascript"
@@ -129,8 +227,14 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Accept",       "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -138,10 +242,15 @@
             },
             "url": {
               "raw": "{{base_url}}/auth/login",
-              "host": ["{{base_url}}"],
-              "path": ["auth", "login"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
             },
-            "description": "Login → token tersimpan otomatis ke collection variable. Semua request private langsung pakai."
+            "description": "Login → token tersimpan otomatis ke collection variable."
           }
         },
         {
@@ -149,14 +258,253 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{token}}" },
-              { "key": "Accept",        "value": "application/json" }
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
             ],
             "url": {
               "raw": "{{base_url}}/auth/logout",
-              "host": ["{{base_url}}"],
-              "path": ["auth", "logout"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
             }
+          }
+        },
+        {
+          "name": "Me (Info User Login)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Kirim Ulang Email Verifikasi",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/email/resend",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "email",
+                "resend"
+              ]
+            },
+            "description": "Kirim ulang email verifikasi. Harus login."
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"saeful2026027@gmail.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/forgot-password",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "forgot-password"
+              ]
+            },
+            "description": "Kirim link reset password ke email. Link mengarah ke frontend (Next.js): http://localhost:3000/reset-password?token=xxx&email=xxx"
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"token-dari-email\",\n  \"email\": \"saeful2026027@gmail.com\",\n  \"password\": \"newpassword123\",\n  \"password_confirmation\": \"newpassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/reset-password",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "reset-password"
+              ]
+            },
+            "description": "Reset password dengan token dari email. Token didapat dari link di email forgot password."
+          }
+        },
+        {
+          "name": "Social — Redirect ke Google",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/google/redirect",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "google",
+                "redirect"
+              ]
+            },
+            "description": "BUKA DI BROWSER (bukan Postman). Redirect user ke halaman login Google. Setelah approve, callback ke /api/auth/google/callback dan redirect ke frontend dengan ?token=xxx"
+          }
+        },
+        {
+          "name": "Social — Redirect ke GitHub",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/github/redirect",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "github",
+                "redirect"
+              ]
+            },
+            "description": "BUKA DI BROWSER. Redirect user ke halaman login GitHub. Setelah approve → frontend mendapat ?token=xxx"
+          }
+        },
+        {
+          "name": "Social — Token Login Google (Next.js)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"access_token\": \"google-access-token-dari-frontend\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/google/token",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "google",
+                "token"
+              ]
+            },
+            "description": "Untuk Next.js yang pakai Google SDK sendiri. Kirim access_token dari Google → dapat Sanctum token."
+          }
+        },
+        {
+          "name": "Social — Token Login GitHub (Next.js)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"access_token\": \"github-access-token-dari-frontend\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/github/token",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "github",
+                "token"
+              ]
+            },
+            "description": "Untuk Next.js yang pakai GitHub SDK sendiri. Kirim access_token dari GitHub → dapat Sanctum token."
           }
         }
       ]
@@ -172,13 +520,23 @@
               "request": {
                 "method": "GET",
                 "header": [
-                  { "key": "Authorization", "value": "Bearer {{token}}" },
-                  { "key": "Accept",        "value": "application/json" }
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
                 ],
                 "url": {
                   "raw": "{{base_url}}/me",
-                  "host": ["{{base_url}}"],
-                  "path": ["me"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "me"
+                  ]
                 },
                 "description": "Profil user + stats: enrolled_courses, my_courses, transactions, certificates, showcases."
               }
@@ -193,13 +551,24 @@
               "request": {
                 "method": "GET",
                 "header": [
-                  { "key": "Authorization", "value": "Bearer {{token}}" },
-                  { "key": "Accept",        "value": "application/json" }
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
                 ],
                 "url": {
                   "raw": "{{base_url}}/me/enrolled",
-                  "host": ["{{base_url}}"],
-                  "path": ["me", "enrolled"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "me",
+                    "enrolled"
+                  ]
                 }
               }
             },
@@ -208,13 +577,25 @@
               "request": {
                 "method": "GET",
                 "header": [
-                  { "key": "Authorization", "value": "Bearer {{token}}" },
-                  { "key": "Accept",        "value": "application/json" }
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
                 ],
                 "url": {
                   "raw": "{{base_url}}/me/enrolled/1",
-                  "host": ["{{base_url}}"],
-                  "path": ["me", "enrolled", "1"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "me",
+                    "enrolled",
+                    "1"
+                  ]
                 },
                 "description": "Detail kursus + semua episode termasuk video_code premium. Ganti 1 dengan course_id."
               }
@@ -224,13 +605,25 @@
               "request": {
                 "method": "GET",
                 "header": [
-                  { "key": "Authorization", "value": "Bearer {{token}}" },
-                  { "key": "Accept",        "value": "application/json" }
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
                 ],
                 "url": {
                   "raw": "{{base_url}}/me/exams/1",
-                  "host": ["{{base_url}}"],
-                  "path": ["me", "exams", "1"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "me",
+                    "exams",
+                    "1"
+                  ]
                 },
                 "description": "Soal ujian kursus (hanya bisa jika sudah beli). Ganti 1 dengan course_id."
               }
@@ -245,13 +638,24 @@
               "request": {
                 "method": "GET",
                 "header": [
-                  { "key": "Authorization", "value": "Bearer {{token}}" },
-                  { "key": "Accept",        "value": "application/json" }
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
                 ],
                 "url": {
                   "raw": "{{base_url}}/me/courses",
-                  "host": ["{{base_url}}"],
-                  "path": ["me", "courses"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "me",
+                    "courses"
+                  ]
                 }
               }
             }
@@ -265,13 +669,24 @@
               "request": {
                 "method": "GET",
                 "header": [
-                  { "key": "Authorization", "value": "Bearer {{token}}" },
-                  { "key": "Accept",        "value": "application/json" }
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
                 ],
                 "url": {
                   "raw": "{{base_url}}/me/transactions",
-                  "host": ["{{base_url}}"],
-                  "path": ["me", "transactions"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "me",
+                    "transactions"
+                  ]
                 }
               }
             },
@@ -280,13 +695,25 @@
               "request": {
                 "method": "GET",
                 "header": [
-                  { "key": "Authorization", "value": "Bearer {{token}}" },
-                  { "key": "Accept",        "value": "application/json" }
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
                 ],
                 "url": {
                   "raw": "{{base_url}}/me/transactions/1",
-                  "host": ["{{base_url}}"],
-                  "path": ["me", "transactions", "1"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "me",
+                    "transactions",
+                    "1"
+                  ]
                 },
                 "description": "Detail transaksi + items + snap_token (jika masih pending). Ganti 1 dengan transaction_id."
               }
@@ -301,13 +728,24 @@
               "request": {
                 "method": "GET",
                 "header": [
-                  { "key": "Authorization", "value": "Bearer {{token}}" },
-                  { "key": "Accept",        "value": "application/json" }
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
                 ],
                 "url": {
                   "raw": "{{base_url}}/me/cart",
-                  "host": ["{{base_url}}"],
-                  "path": ["me", "cart"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "me",
+                    "cart"
+                  ]
                 }
               }
             },
@@ -316,13 +754,25 @@
               "request": {
                 "method": "POST",
                 "header": [
-                  { "key": "Authorization", "value": "Bearer {{token}}" },
-                  { "key": "Accept",        "value": "application/json" }
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
                 ],
                 "url": {
                   "raw": "{{base_url}}/me/cart/1",
-                  "host": ["{{base_url}}"],
-                  "path": ["me", "cart", "1"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "me",
+                    "cart",
+                    "1"
+                  ]
                 },
                 "description": "Ganti 1 dengan course_id."
               }
@@ -332,13 +782,25 @@
               "request": {
                 "method": "DELETE",
                 "header": [
-                  { "key": "Authorization", "value": "Bearer {{token}}" },
-                  { "key": "Accept",        "value": "application/json" }
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
                 ],
                 "url": {
                   "raw": "{{base_url}}/me/cart/1",
-                  "host": ["{{base_url}}"],
-                  "path": ["me", "cart", "1"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "me",
+                    "cart",
+                    "1"
+                  ]
                 },
                 "description": "Ganti 1 dengan cart_id (bukan course_id)."
               }
@@ -348,9 +810,18 @@
               "request": {
                 "method": "POST",
                 "header": [
-                  { "key": "Authorization", "value": "Bearer {{token}}" },
-                  { "key": "Content-Type",  "value": "application/json" },
-                  { "key": "Accept",        "value": "application/json" }
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
                 ],
                 "body": {
                   "mode": "raw",
@@ -358,8 +829,13 @@
                 },
                 "url": {
                   "raw": "{{base_url}}/me/checkout",
-                  "host": ["{{base_url}}"],
-                  "path": ["me", "checkout"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "me",
+                    "checkout"
+                  ]
                 },
                 "description": "Buat transaksi dari isi keranjang. Response: { invoice, snap_token, grand_total }. Di Next.js: snap.pay(snap_token)"
               }
@@ -374,13 +850,24 @@
               "request": {
                 "method": "GET",
                 "header": [
-                  { "key": "Authorization", "value": "Bearer {{token}}" },
-                  { "key": "Accept",        "value": "application/json" }
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
                 ],
                 "url": {
                   "raw": "{{base_url}}/me/certificates",
-                  "host": ["{{base_url}}"],
-                  "path": ["me", "certificates"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "me",
+                    "certificates"
+                  ]
                 }
               }
             }
@@ -394,13 +881,24 @@
               "request": {
                 "method": "GET",
                 "header": [
-                  { "key": "Authorization", "value": "Bearer {{token}}" },
-                  { "key": "Accept",        "value": "application/json" }
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
                 ],
                 "url": {
                   "raw": "{{base_url}}/me/exam-scores",
-                  "host": ["{{base_url}}"],
-                  "path": ["me", "exam-scores"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "me",
+                    "exam-scores"
+                  ]
                 }
               }
             }
@@ -414,13 +912,24 @@
               "request": {
                 "method": "GET",
                 "header": [
-                  { "key": "Authorization", "value": "Bearer {{token}}" },
-                  { "key": "Accept",        "value": "application/json" }
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
                 ],
                 "url": {
                   "raw": "{{base_url}}/me/reviews",
-                  "host": ["{{base_url}}"],
-                  "path": ["me", "reviews"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "me",
+                    "reviews"
+                  ]
                 }
               }
             }
@@ -434,13 +943,24 @@
               "request": {
                 "method": "GET",
                 "header": [
-                  { "key": "Authorization", "value": "Bearer {{token}}" },
-                  { "key": "Accept",        "value": "application/json" }
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
                 ],
                 "url": {
                   "raw": "{{base_url}}/me/showcases",
-                  "host": ["{{base_url}}"],
-                  "path": ["me", "showcases"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "me",
+                    "showcases"
+                  ]
                 }
               }
             },
@@ -449,23 +969,55 @@
               "request": {
                 "method": "POST",
                 "header": [
-                  { "key": "Authorization", "value": "Bearer {{token}}" },
-                  { "key": "Accept",        "value": "application/json" }
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
                 ],
                 "body": {
                   "mode": "formdata",
                   "formdata": [
-                    { "key": "title",       "value": "Aplikasi Kasir UMKM",       "type": "text" },
-                    { "key": "description", "value": "Deskripsi project...",       "type": "text" },
-                    { "key": "link",        "value": "https://github.com/contoh", "type": "text" },
-                    { "key": "course_id",   "value": "1",                         "type": "text", "description": "Opsional" },
-                    { "key": "cover",       "src": "",                            "type": "file" }
+                    {
+                      "key": "title",
+                      "value": "Aplikasi Kasir UMKM",
+                      "type": "text"
+                    },
+                    {
+                      "key": "description",
+                      "value": "Deskripsi project...",
+                      "type": "text"
+                    },
+                    {
+                      "key": "link",
+                      "value": "https://github.com/contoh",
+                      "type": "text"
+                    },
+                    {
+                      "key": "course_id",
+                      "value": "1",
+                      "type": "text",
+                      "description": "Opsional"
+                    },
+                    {
+                      "key": "cover",
+                      "src": "",
+                      "type": "file"
+                    }
                   ]
                 },
                 "url": {
                   "raw": "{{base_url}}/me/showcases",
-                  "host": ["{{base_url}}"],
-                  "path": ["me", "showcases"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "me",
+                    "showcases"
+                  ]
                 }
               }
             },
@@ -474,22 +1026,51 @@
               "request": {
                 "method": "POST",
                 "header": [
-                  { "key": "Authorization", "value": "Bearer {{token}}" },
-                  { "key": "Accept",        "value": "application/json" }
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
                 ],
                 "body": {
                   "mode": "formdata",
                   "formdata": [
-                    { "key": "title",       "value": "Judul Baru",                "type": "text" },
-                    { "key": "description", "value": "Deskripsi baru...",          "type": "text" },
-                    { "key": "link",        "value": "https://github.com/contoh", "type": "text" },
-                    { "key": "cover",       "src": "",                            "type": "file", "description": "Opsional" }
+                    {
+                      "key": "title",
+                      "value": "Judul Baru",
+                      "type": "text"
+                    },
+                    {
+                      "key": "description",
+                      "value": "Deskripsi baru...",
+                      "type": "text"
+                    },
+                    {
+                      "key": "link",
+                      "value": "https://github.com/contoh",
+                      "type": "text"
+                    },
+                    {
+                      "key": "cover",
+                      "src": "",
+                      "type": "file",
+                      "description": "Opsional"
+                    }
                   ]
                 },
                 "url": {
                   "raw": "{{base_url}}/me/showcases/1",
-                  "host": ["{{base_url}}"],
-                  "path": ["me", "showcases", "1"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "me",
+                    "showcases",
+                    "1"
+                  ]
                 },
                 "description": "Ganti 1 dengan showcase_id."
               }
@@ -499,13 +1080,25 @@
               "request": {
                 "method": "DELETE",
                 "header": [
-                  { "key": "Authorization", "value": "Bearer {{token}}" },
-                  { "key": "Accept",        "value": "application/json" }
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
                 ],
                 "url": {
                   "raw": "{{base_url}}/me/showcases/1",
-                  "host": ["{{base_url}}"],
-                  "path": ["me", "showcases", "1"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "me",
+                    "showcases",
+                    "1"
+                  ]
                 },
                 "description": "Ganti 1 dengan showcase_id."
               }
@@ -520,13 +1113,24 @@
               "request": {
                 "method": "GET",
                 "header": [
-                  { "key": "Authorization", "value": "Bearer {{token}}" },
-                  { "key": "Accept",        "value": "application/json" }
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
                 ],
                 "url": {
                   "raw": "{{base_url}}/me/website",
-                  "host": ["{{base_url}}"],
-                  "path": ["me", "website"]
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "me",
+                    "website"
+                  ]
                 },
                 "description": "Semua section sekaligus: profile, social_links, skills, services, experiences, educations, portfolios, testimonials."
               }
@@ -535,64 +1139,216 @@
               "name": "GET — Profil",
               "request": {
                 "method": "GET",
-                "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Accept", "value": "application/json" }],
-                "url": { "raw": "{{base_url}}/me/website/profile", "host": ["{{base_url}}"], "path": ["me","website","profile"] }
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/me/website/profile",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "me",
+                    "website",
+                    "profile"
+                  ]
+                }
               }
             },
             {
               "name": "GET — Skills",
               "request": {
                 "method": "GET",
-                "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Accept", "value": "application/json" }],
-                "url": { "raw": "{{base_url}}/me/website/skills", "host": ["{{base_url}}"], "path": ["me","website","skills"] }
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/me/website/skills",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "me",
+                    "website",
+                    "skills"
+                  ]
+                }
               }
             },
             {
               "name": "GET — Services",
               "request": {
                 "method": "GET",
-                "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Accept", "value": "application/json" }],
-                "url": { "raw": "{{base_url}}/me/website/services", "host": ["{{base_url}}"], "path": ["me","website","services"] }
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/me/website/services",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "me",
+                    "website",
+                    "services"
+                  ]
+                }
               }
             },
             {
               "name": "GET — Pengalaman",
               "request": {
                 "method": "GET",
-                "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Accept", "value": "application/json" }],
-                "url": { "raw": "{{base_url}}/me/website/experiences", "host": ["{{base_url}}"], "path": ["me","website","experiences"] }
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/me/website/experiences",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "me",
+                    "website",
+                    "experiences"
+                  ]
+                }
               }
             },
             {
               "name": "GET — Pendidikan",
               "request": {
                 "method": "GET",
-                "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Accept", "value": "application/json" }],
-                "url": { "raw": "{{base_url}}/me/website/educations", "host": ["{{base_url}}"], "path": ["me","website","educations"] }
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/me/website/educations",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "me",
+                    "website",
+                    "educations"
+                  ]
+                }
               }
             },
             {
               "name": "GET — Portfolio",
               "request": {
                 "method": "GET",
-                "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Accept", "value": "application/json" }],
-                "url": { "raw": "{{base_url}}/me/website/portfolios", "host": ["{{base_url}}"], "path": ["me","website","portfolios"] }
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/me/website/portfolios",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "me",
+                    "website",
+                    "portfolios"
+                  ]
+                }
               }
             },
             {
               "name": "GET — Testimonial",
               "request": {
                 "method": "GET",
-                "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Accept", "value": "application/json" }],
-                "url": { "raw": "{{base_url}}/me/website/testimonials", "host": ["{{base_url}}"], "path": ["me","website","testimonials"] }
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/me/website/testimonials",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "me",
+                    "website",
+                    "testimonials"
+                  ]
+                }
               }
             },
             {
               "name": "GET — Social Links",
               "request": {
                 "method": "GET",
-                "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Accept", "value": "application/json" }],
-                "url": { "raw": "{{base_url}}/me/website/social-links", "host": ["{{base_url}}"], "path": ["me","website","social-links"] }
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/me/website/social-links",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "me",
+                    "website",
+                    "social-links"
+                  ]
+                }
               }
             }
           ]
