@@ -14,7 +14,12 @@ class Course extends Model
 {
     use HasFactory, HasScope, HasSlug;
 
-    protected $fillable = ['name', 'image', 'slug', 'category_id', 'user_id', 'certificates_id', 'demo', 'description', 'discount', 'price'];
+    protected $fillable = ['name', 'image', 'slug', 'category_id', 'user_id', 'certificates_id', 'demo', 'description', 'discount', 'price', 'status'];
+
+    public function scopeApproved($query)
+    {
+        return $query->where('status', 'approved');
+    }
 
     protected function image(): Attribute
     {

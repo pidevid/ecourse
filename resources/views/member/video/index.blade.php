@@ -13,6 +13,7 @@
                     <th width="10">EPS</th>
                     <th>TITLE</th>
                     <th>TYPE</th>
+                    <th>STATUS</th>
                     <th class="hidden sm:flex">TEORI</th>
                     <th>ACTION</th>
                 </tr>
@@ -26,6 +27,15 @@
                             <span class="badge badge-{{ $video->intro == 1 ? 'danger' : 'primary' }}">
                                 {{ $video->intro == 1 ? 'premium' : 'free' }}
                             </span>
+                        </td>
+                        <td>
+                            @if($video->status === 'approved')
+                                <span class="badge badge-success">Approved</span>
+                            @elseif($video->status === 'rejected')
+                                <span class="badge badge-danger">Rejected</span>
+                            @else
+                                <span class="badge badge-warning">Pending</span>
+                            @endif
                         </td>
                         <td class="overflow-hidden overflow-ellipsis max-w-xs hidden sm:flex">
                             {{ \Illuminate\Support\Str::words($video->teori, 6, '....') }}</td>

@@ -10,6 +10,15 @@
                             <img class="img-fluid" src="{{ $course->image }}" alt="cover">
                         </div>
                         <h3 class="profile-username text-center">{{ $course->name }}</h3>
+                        <div class="text-center mb-1">
+                            @if($course->status === 'approved')
+                                <span class="badge badge-success"><i class="fas fa-check-circle mr-1"></i>Approved</span>
+                            @elseif($course->status === 'rejected')
+                                <span class="badge badge-danger"><i class="fas fa-times-circle mr-1"></i>Rejected — Edit & resubmit</span>
+                            @else
+                                <span class="badge badge-warning"><i class="fas fa-clock mr-1"></i>Menunggu Verifikasi Admin</span>
+                            @endif
+                        </div>
                         <h3 class="text-success text-center font-weight-bold">
                             <sup>Rp</sup>
                             {{ moneyFormat(discount($course->price, $course->discount)) }}

@@ -74,6 +74,18 @@ class VideoController extends Controller
         return redirect(route('admin.video.index', $course))->with('toast_success', 'Video Updated');
     }
 
+    public function approve(Video $video)
+    {
+        $video->update(['status' => 'approved']);
+        return back()->with('toast_success', 'Episode berhasil di-approve');
+    }
+
+    public function reject(Video $video)
+    {
+        $video->update(['status' => 'rejected']);
+        return back()->with('toast_success', 'Episode berhasil di-reject');
+    }
+
     public function destroy(Video $video)
     {
         // hapus data video berdasarkan id

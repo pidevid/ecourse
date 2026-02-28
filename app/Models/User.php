@@ -23,7 +23,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array<int, string>
      */
-    protected $fillable = ['name', 'email', 'password', 'username', 'avatar', 'github', 'instagram', 'about'];
+    protected $fillable = ['name', 'email', 'password', 'username', 'avatar', 'github', 'instagram', 'about', 'has_website_access'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -79,5 +79,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function certificates()
     {
         return $this->hasMany(Certificate::class);
+    }
+
+    public function personalWebsite()
+    {
+        return $this->hasOne(PersonalWebsite::class);
     }
 }

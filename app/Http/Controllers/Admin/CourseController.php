@@ -125,6 +125,18 @@ class CourseController extends Controller
         return redirect(route('admin.course.index'))->with('toast_success', 'Course Updated');
     }
 
+    public function approve(Course $course)
+    {
+        $course->update(['status' => 'approved']);
+        return back()->with('toast_success', 'Course berhasil di-approve');
+    }
+
+    public function reject(Course $course)
+    {
+        $course->update(['status' => 'rejected']);
+        return back()->with('toast_success', 'Course berhasil di-reject');
+    }
+
     /**
      * Remove the specified resource from storage.
      *

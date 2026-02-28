@@ -20,7 +20,9 @@ class CourseController extends Controller
             tampung semua data course kedalam variabel $courses, kemudian kita memanggil relasi menggunakan withcount,
             selanjutnya pada saat melakukan pemanggilan relasi details yang kita ubah namanya menjadi enrolled, disini kita melakukan sebuah query untuk mengambil data transaksi yang memiliki status "success", disini kita juga menambahkan method search yang kita dapatkan dari sebuah trait hasScope, dan juga kita urutkan datanya dari yang paling baru.
         */
-        $courses = Course::withCount([
+        $isAdmin = Auth::check() && Auth::user()->hasRole('admin');
+
+        $query = Course::withCount([
             'videos',
             'reviews',
             'details as enrolled' => function ($query) {
@@ -28,10 +30,13 @@ class CourseController extends Controller
                     $query->where('status', 'success');
                 });
             },
-        ])
-            ->search('name')
-            ->latest()
-            ->get();
+        ])->search('name')->latest();
+
+        if (!$isAdmin) {
+            $query->approved();
+        }
+
+        $courses = $query->get();
 
         // passing variabel $courses kedalam view.
         return view('landing.course.index', compact('courses'));
@@ -40,7 +45,15 @@ class CourseController extends Controller
 
     public function show(Course $course)
     {
-        $videos = Video::where('course_id', $course->id)->get();
+        $isAdmin = Auth::check() && Auth::user()->hasRole('admin');
+
+        abort_if(!$isAdmin && $course->status !== 'approved', 404);
+
+        $videoQuery = Video::where('course_id', $course->id);
+        if (!$isAdmin) {
+            $videoQuery->approved();
+        }
+        $videos = $videoQuery->get();
 
         $enrolled = Transaction::with('details.course')
             ->where('status', 'success')
@@ -70,11 +83,17 @@ class CourseController extends Controller
 
     public function video(Course $course, $episode)
     {
+        $isAdmin = Auth::check() && Auth::user()->hasRole('admin');
+
+        abort_if(!$isAdmin && $course->status !== 'approved', 404);
+
         $user = Auth::user();
 
-        $video = Video::where('course_id', $course->id)
-            ->where('episode', $episode)
-            ->firstOrFail();
+        $videoQuery = Video::where('course_id', $course->id)->where('episode', $episode);
+        if (!$isAdmin) {
+            $videoQuery->where('status', 'approved');
+        }
+        $video = $videoQuery->firstOrFail();
 
         $transaction = $user
             ? Transaction::with('user', 'details.course')
@@ -98,10 +117,12 @@ class CourseController extends Controller
             $alreadyBought = '';
         }
 
-        if ($alreadyBought || $video->intro == 0) {
-            $videos = Video::where('course_id', $course->id)
-                ->orderBy('episode')
-                ->get();
+        if ($isAdmin || $alreadyBought || $video->intro == 0) {
+            $videoListQuery = Video::where('course_id', $course->id)->orderBy('episode');
+            if (!$isAdmin) {
+                $videoListQuery->where('status', 'approved');
+            }
+            $videos = $videoListQuery->get();
             $totalEpisodes = $videos->count();
         } else {
             return back()->with('toast_error', 'Episode ini hanya untuk member premium');

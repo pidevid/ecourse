@@ -34,6 +34,10 @@ use App\Http\Controllers\Member\TransactionController as MemberTransactionContro
 // web.php
 
 use App\Http\Controllers\Auth\SocialiteController;
+use App\Http\Controllers\Member\CKEditorController;
+use App\Http\Controllers\Landing\PortfolioController;
+use App\Http\Controllers\Member\WebsiteController;
+use App\Http\Controllers\Member\WebsitePaymentController;
 
 
 Route::get('/auth/{provider}', [SocialiteController::class, 'redirectToProvider']);
@@ -42,6 +46,14 @@ Route::fallback(function () {
     return view('errors-404');
 });
 
+
+// Public portfolio route
+Route::get('/portfolio/{username}', [PortfolioController::class, 'show'])->name('portfolio.show');
+
+// Midtrans website payment callback (outside auth, CSRF exempt)
+Route::post('/website/payment/callback', [WebsitePaymentController::class, 'callback'])
+    ->name('website.payment.callback')
+    ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 
 Route::get('/', [HomeController::class, '__invoke'])
     ->name('home')
@@ -147,6 +159,10 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => ['auth', 'r
             Route::put('/update/{course:slug}/exams/{exam}', 'update')->name('update');
             Route::delete('/delete/{exam}', 'destroy')->name('destroy');
         });
+    // admin course approve/reject
+    Route::patch('/course/{course}/approve', [CourseController::class, 'approve'])->name('course.approve');
+    Route::patch('/course/{course}/reject', [CourseController::class, 'reject'])->name('course.reject');
+
     // admin video route
     Route::controller(VideoController::class)
         ->as('video.')
@@ -157,13 +173,15 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'middleware' => ['auth', 'r
             Route::get('/edit/{course:slug}/{video}', 'edit')->name('edit');
             Route::put('/update/{course:slug}/{video}', 'update')->name('update');
             Route::delete('/delete/{video}', 'destroy')->name('destroy');
+            Route::patch('/video/{video}/approve', 'approve')->name('approve');
+            Route::patch('/video/{video}/reject', 'reject')->name('reject');
         });
     // admin transaction route
     Route::resource('/transaction', TransactionController::class)->only('index', 'show');
 });
 
 // member route
-Route::group(['as' => 'member.', 'prefix' => 'account', 'middleware' => ['auth', 'role:member|author', 'verified']], function () {
+Route::group(['as' => 'member.', 'prefix' => 'account', 'middleware' => ['auth', 'role:member|author|admin', 'verified']], function () {
     // member dashboard route
     Route::get('/dashboard', MemberDashboardController::class)->name('dashboard');
     // member course route
@@ -197,6 +215,8 @@ Route::group(['as' => 'member.', 'prefix' => 'account', 'middleware' => ['auth',
         });
     // member review route
     Route::post('/review/{course}', [MemberReviewController::class, 'store'])->name('review');
+    // CKEditor image upload
+    Route::post('/ckeditor/upload', [CKEditorController::class, 'upload'])->name('ckeditor.upload');
     // member transaction route
     Route::resource('/transaction', MemberTransactionController::class)->only('index', 'show');
     // member profile route
@@ -207,4 +227,58 @@ Route::group(['as' => 'member.', 'prefix' => 'account', 'middleware' => ['auth',
             Route::put('/profile/{user}', 'updateProfile')->name('update');
             Route::put('/profile/password/{user}', 'updatePassword')->name('password');
         });
+
+    // ── Personal Website routes ───────────────────────────────────────────────
+    Route::prefix('website')->as('website.')->group(function () {
+        // Buy page — accessible before website.access middleware
+        Route::get('/buy', [WebsitePaymentController::class, 'index'])->name('buy');
+        Route::post('/buy/checkout', [WebsitePaymentController::class, 'checkout'])->name('checkout');
+
+        // Protected by website.access middleware
+        Route::middleware('website.access')->group(function () {
+            Route::get('/', [WebsiteController::class, 'index'])->name('index');
+
+            // Settings
+            Route::get('/settings', [WebsiteController::class, 'settings'])->name('settings');
+            Route::post('/settings', [WebsiteController::class, 'saveSettings'])->name('settings.save');
+
+            // Profile
+            Route::get('/profile', [WebsiteController::class, 'profile'])->name('profile');
+            Route::post('/profile', [WebsiteController::class, 'saveProfile'])->name('profile.save');
+
+            // Skills
+            Route::get('/skills', [WebsiteController::class, 'skills'])->name('skills');
+            Route::post('/skills', [WebsiteController::class, 'storeSkill'])->name('skills.store');
+            Route::delete('/skills/{skill}', [WebsiteController::class, 'destroySkill'])->name('skills.destroy');
+
+            // Services
+            Route::get('/services', [WebsiteController::class, 'services'])->name('services');
+            Route::post('/services', [WebsiteController::class, 'storeService'])->name('services.store');
+            Route::delete('/services/{service}', [WebsiteController::class, 'destroyService'])->name('services.destroy');
+
+            // Experience
+            Route::get('/experience', [WebsiteController::class, 'experience'])->name('experience');
+            Route::post('/experience', [WebsiteController::class, 'storeExperience'])->name('experience.store');
+            Route::delete('/experience/{experience}', [WebsiteController::class, 'destroyExperience'])->name('experience.destroy');
+
+            // Education
+            Route::get('/education', [WebsiteController::class, 'education'])->name('education');
+            Route::post('/education', [WebsiteController::class, 'storeEducation'])->name('education.store');
+            Route::delete('/education/{education}', [WebsiteController::class, 'destroyEducation'])->name('education.destroy');
+
+            // Portfolio
+            Route::get('/portfolio', [WebsiteController::class, 'portfolio'])->name('portfolio');
+            Route::post('/portfolio', [WebsiteController::class, 'storePortfolio'])->name('portfolio.store');
+            Route::delete('/portfolio/{portfolio}', [WebsiteController::class, 'destroyPortfolio'])->name('portfolio.destroy');
+
+            // Testimonials
+            Route::get('/testimonials', [WebsiteController::class, 'testimonials'])->name('testimonials');
+            Route::post('/testimonials', [WebsiteController::class, 'storeTestimonial'])->name('testimonials.store');
+            Route::delete('/testimonials/{testimonial}', [WebsiteController::class, 'destroyTestimonial'])->name('testimonials.destroy');
+
+            // Social Links
+            Route::get('/social', [WebsiteController::class, 'socialLinks'])->name('social');
+            Route::post('/social', [WebsiteController::class, 'saveSocialLinks'])->name('social.save');
+        });
+    });
 });

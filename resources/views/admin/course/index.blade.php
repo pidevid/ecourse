@@ -10,6 +10,15 @@
                             <img class="img-fluid" src="{{ $course->image }}" alt="cover">
                         </div>
                         <h3 class="profile-username text-center">{{ $course->name }}</h3>
+                        <div class="text-center mb-1">
+                            @if($course->status === 'approved')
+                                <span class="badge badge-success"><i class="fas fa-check-circle mr-1"></i>Approved</span>
+                            @elseif($course->status === 'rejected')
+                                <span class="badge badge-danger"><i class="fas fa-times-circle mr-1"></i>Rejected</span>
+                            @else
+                                <span class="badge badge-warning"><i class="fas fa-clock mr-1"></i>Pending Review</span>
+                            @endif
+                        </div>
                         <h3 class="text-success text-center font-weight-bold">
                             <sup>Rp</sup>
                             {{ moneyFormat(discount($course->price, $course->discount)) }}
@@ -43,6 +52,22 @@
                             <i class="fas fa-list"></i>
                           siswa
                         </a>
+                        @if($course->status !== 'approved')
+                        <form action="{{ route('admin.course.approve', $course->id) }}" method="POST" class="d-inline">
+                            @csrf @method('PATCH')
+                            <button type="submit" class="btn btn-success btn-sm">
+                                <i class="fas fa-check mr-1"></i>Approve
+                            </button>
+                        </form>
+                        @endif
+                        @if($course->status !== 'rejected')
+                        <form action="{{ route('admin.course.reject', $course->id) }}" method="POST" class="d-inline">
+                            @csrf @method('PATCH')
+                            <button type="submit" class="btn btn-secondary btn-sm">
+                                <i class="fas fa-times mr-1"></i>Reject
+                            </button>
+                        </form>
+                        @endif
                         <a href="{{ route('admin.course.edit', $course->id) }}" class="btn btn-info btn-sm">
                             <i class="fas fa-edit mr-1"></i>
                             Edit

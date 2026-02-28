@@ -2,6 +2,17 @@
 
 <a href="{{ route('course.show', $course->slug) }}" class="max-w-sm rounded overflow-hidden shadow-lg transition-transform duration-300 transform hover:scale-105 dark:bg-slate-800">
     <img class="w-full rounded-t-lg object-cover h-44 sm:h-48 md:h-56" src="{{ $course->image }}" alt="{{ $course->name }}">
+    @auth
+        @if(auth()->user()->hasRole('admin') && $course->status !== 'approved')
+        <div class="px-3 pt-2">
+            @if($course->status === 'pending')
+                <span class="inline-block text-xs bg-yellow-100 text-yellow-800 font-semibold px-2 py-0.5 rounded-full">⏳ Pending Review</span>
+            @else
+                <span class="inline-block text-xs bg-red-100 text-red-800 font-semibold px-2 py-0.5 rounded-full">✕ Rejected</span>
+            @endif
+        </div>
+        @endif
+    @endauth
     <div class="px-6 py-4">
         <h1 class="font-bold text-lg sm:text-xl mb-2  dark:text-white hover:underline">
             {{ $course->name }}

@@ -1,0 +1,603 @@
+{
+  "info": {
+    "name": "Ecourse API",
+    "description": "Koleksi lengkap API Ecourse.\n\n🌐 PUBLIC — semua orang bisa akses (guest & login)\n🔐 PRIVATE — harus login, gunakan Bearer token\n\nBase URL: http://localhost:8080/api\n\nCara pakai:\n1. Jalankan 'Auth > Login' → token tersimpan otomatis\n2. Semua request private langsung pakai token tersebut",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8080/api", "type": "string" },
+    { "key": "token",    "value": "",                           "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "🌐 PUBLIC (Guest & Login)",
+      "item": [
+        {
+          "name": "Kategori",
+          "item": [
+            {
+              "name": "GET — List Kategori",
+              "request": {
+                "method": "GET",
+                "header": [{ "key": "Accept", "value": "application/json" }],
+                "url": {
+                  "raw": "{{base_url}}/categories",
+                  "host": ["{{base_url}}"],
+                  "path": ["categories"]
+                },
+                "description": "Semua kategori kursus beserta jumlah kursus. Bisa diakses tanpa login."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Kursus",
+          "item": [
+            {
+              "name": "GET — Catalog Kursus",
+              "request": {
+                "method": "GET",
+                "header": [{ "key": "Accept", "value": "application/json" }],
+                "url": {
+                  "raw": "{{base_url}}/courses?search=&category=",
+                  "host": ["{{base_url}}"],
+                  "path": ["courses"],
+                  "query": [
+                    { "key": "search",   "value": "", "description": "Cari berdasarkan nama kursus" },
+                    { "key": "category", "value": "", "description": "Filter berdasarkan slug kategori" }
+                  ]
+                },
+                "description": "List semua kursus yang sudah approved. Filter: ?search=nama&category=slug"
+              }
+            },
+            {
+              "name": "GET — Detail Kursus + Episode",
+              "request": {
+                "method": "GET",
+                "header": [{ "key": "Accept", "value": "application/json" }],
+                "url": {
+                  "raw": "{{base_url}}/courses/laravel-vue",
+                  "host": ["{{base_url}}"],
+                  "path": ["courses", "laravel-vue"]
+                },
+                "description": "Detail kursus + episode + review. Episode premium: video_code = null untuk guest (harus beli dulu). Ganti slug sesuai kursus."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Showcase Publik",
+          "item": [
+            {
+              "name": "GET — List Showcase",
+              "request": {
+                "method": "GET",
+                "header": [{ "key": "Accept", "value": "application/json" }],
+                "url": {
+                  "raw": "{{base_url}}/showcases?search=",
+                  "host": ["{{base_url}}"],
+                  "path": ["showcases"],
+                  "query": [
+                    { "key": "search", "value": "", "description": "Cari berdasarkan judul" }
+                  ]
+                },
+                "description": "Semua project showcase dari semua user. Bisa diakses tanpa login."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Portfolio Publik",
+          "item": [
+            {
+              "name": "GET — Portfolio by Username",
+              "request": {
+                "method": "GET",
+                "header": [{ "key": "Accept", "value": "application/json" }],
+                "url": {
+                  "raw": "{{base_url}}/portfolio/saeful",
+                  "host": ["{{base_url}}"],
+                  "path": ["portfolio", "saeful"]
+                },
+                "description": "Data personal website/portfolio user. Hanya yang is_published=true. Ganti 'saeful' dengan username."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "🔐 Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.token) {",
+                  "  pm.collectionVariables.set('token', res.token);",
+                  "  console.log('Token tersimpan:', res.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept",       "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"saeful2026027@gmail.com\",\n  \"password\": \"iful123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "Login → token tersimpan otomatis ke collection variable. Semua request private langsung pakai."
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Accept",        "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/logout",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "logout"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🔐 PRIVATE — /api/me",
+      "item": [
+        {
+          "name": "Profil & Dashboard",
+          "item": [
+            {
+              "name": "GET — Profil + Stats",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{token}}" },
+                  { "key": "Accept",        "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/me",
+                  "host": ["{{base_url}}"],
+                  "path": ["me"]
+                },
+                "description": "Profil user + stats: enrolled_courses, my_courses, transactions, certificates, showcases."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Kelas yang Dibeli (Enrolled)",
+          "item": [
+            {
+              "name": "GET — List Kelas yang Dibeli",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{token}}" },
+                  { "key": "Accept",        "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/me/enrolled",
+                  "host": ["{{base_url}}"],
+                  "path": ["me", "enrolled"]
+                }
+              }
+            },
+            {
+              "name": "GET — Detail Kelas + Semua Episode",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{token}}" },
+                  { "key": "Accept",        "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/me/enrolled/1",
+                  "host": ["{{base_url}}"],
+                  "path": ["me", "enrolled", "1"]
+                },
+                "description": "Detail kursus + semua episode termasuk video_code premium. Ganti 1 dengan course_id."
+              }
+            },
+            {
+              "name": "GET — Soal Ujian Kelas",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{token}}" },
+                  { "key": "Accept",        "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/me/exams/1",
+                  "host": ["{{base_url}}"],
+                  "path": ["me", "exams", "1"]
+                },
+                "description": "Soal ujian kursus (hanya bisa jika sudah beli). Ganti 1 dengan course_id."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Kursus yang Dibuat (Author)",
+          "item": [
+            {
+              "name": "GET — List Kursus Saya",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{token}}" },
+                  { "key": "Accept",        "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/me/courses",
+                  "host": ["{{base_url}}"],
+                  "path": ["me", "courses"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Transaksi",
+          "item": [
+            {
+              "name": "GET — List Transaksi",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{token}}" },
+                  { "key": "Accept",        "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/me/transactions",
+                  "host": ["{{base_url}}"],
+                  "path": ["me", "transactions"]
+                }
+              }
+            },
+            {
+              "name": "GET — Detail Transaksi",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{token}}" },
+                  { "key": "Accept",        "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/me/transactions/1",
+                  "host": ["{{base_url}}"],
+                  "path": ["me", "transactions", "1"]
+                },
+                "description": "Detail transaksi + items + snap_token (jika masih pending). Ganti 1 dengan transaction_id."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Cart & Checkout",
+          "item": [
+            {
+              "name": "GET — Isi Keranjang",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{token}}" },
+                  { "key": "Accept",        "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/me/cart",
+                  "host": ["{{base_url}}"],
+                  "path": ["me", "cart"]
+                }
+              }
+            },
+            {
+              "name": "POST — Tambah ke Keranjang",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{token}}" },
+                  { "key": "Accept",        "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/me/cart/1",
+                  "host": ["{{base_url}}"],
+                  "path": ["me", "cart", "1"]
+                },
+                "description": "Ganti 1 dengan course_id."
+              }
+            },
+            {
+              "name": "DELETE — Hapus dari Keranjang",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{token}}" },
+                  { "key": "Accept",        "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/me/cart/1",
+                  "host": ["{{base_url}}"],
+                  "path": ["me", "cart", "1"]
+                },
+                "description": "Ganti 1 dengan cart_id (bukan course_id)."
+              }
+            },
+            {
+              "name": "POST — Checkout → Snap Token",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{token}}" },
+                  { "key": "Content-Type",  "value": "application/json" },
+                  { "key": "Accept",        "value": "application/json" }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Nama Pembeli\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/me/checkout",
+                  "host": ["{{base_url}}"],
+                  "path": ["me", "checkout"]
+                },
+                "description": "Buat transaksi dari isi keranjang. Response: { invoice, snap_token, grand_total }. Di Next.js: snap.pay(snap_token)"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Sertifikat",
+          "item": [
+            {
+              "name": "GET — List Sertifikat",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{token}}" },
+                  { "key": "Accept",        "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/me/certificates",
+                  "host": ["{{base_url}}"],
+                  "path": ["me", "certificates"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Hasil Ujian",
+          "item": [
+            {
+              "name": "GET — List Hasil Ujian",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{token}}" },
+                  { "key": "Accept",        "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/me/exam-scores",
+                  "host": ["{{base_url}}"],
+                  "path": ["me", "exam-scores"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Review",
+          "item": [
+            {
+              "name": "GET — Review yang Saya Tulis",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{token}}" },
+                  { "key": "Accept",        "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/me/reviews",
+                  "host": ["{{base_url}}"],
+                  "path": ["me", "reviews"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Showcase (CRUD)",
+          "item": [
+            {
+              "name": "GET — List Showcase Saya",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{token}}" },
+                  { "key": "Accept",        "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/me/showcases",
+                  "host": ["{{base_url}}"],
+                  "path": ["me", "showcases"]
+                }
+              }
+            },
+            {
+              "name": "POST — Buat Showcase",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{token}}" },
+                  { "key": "Accept",        "value": "application/json" }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    { "key": "title",       "value": "Aplikasi Kasir UMKM",       "type": "text" },
+                    { "key": "description", "value": "Deskripsi project...",       "type": "text" },
+                    { "key": "link",        "value": "https://github.com/contoh", "type": "text" },
+                    { "key": "course_id",   "value": "1",                         "type": "text", "description": "Opsional" },
+                    { "key": "cover",       "src": "",                            "type": "file" }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/me/showcases",
+                  "host": ["{{base_url}}"],
+                  "path": ["me", "showcases"]
+                }
+              }
+            },
+            {
+              "name": "POST — Update Showcase",
+              "request": {
+                "method": "POST",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{token}}" },
+                  { "key": "Accept",        "value": "application/json" }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    { "key": "title",       "value": "Judul Baru",                "type": "text" },
+                    { "key": "description", "value": "Deskripsi baru...",          "type": "text" },
+                    { "key": "link",        "value": "https://github.com/contoh", "type": "text" },
+                    { "key": "cover",       "src": "",                            "type": "file", "description": "Opsional" }
+                  ]
+                },
+                "url": {
+                  "raw": "{{base_url}}/me/showcases/1",
+                  "host": ["{{base_url}}"],
+                  "path": ["me", "showcases", "1"]
+                },
+                "description": "Ganti 1 dengan showcase_id."
+              }
+            },
+            {
+              "name": "DELETE — Hapus Showcase",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{token}}" },
+                  { "key": "Accept",        "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/me/showcases/1",
+                  "host": ["{{base_url}}"],
+                  "path": ["me", "showcases", "1"]
+                },
+                "description": "Ganti 1 dengan showcase_id."
+              }
+            }
+          ]
+        },
+        {
+          "name": "Personal Website",
+          "item": [
+            {
+              "name": "GET — Semua Data Website",
+              "request": {
+                "method": "GET",
+                "header": [
+                  { "key": "Authorization", "value": "Bearer {{token}}" },
+                  { "key": "Accept",        "value": "application/json" }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/me/website",
+                  "host": ["{{base_url}}"],
+                  "path": ["me", "website"]
+                },
+                "description": "Semua section sekaligus: profile, social_links, skills, services, experiences, educations, portfolios, testimonials."
+              }
+            },
+            {
+              "name": "GET — Profil",
+              "request": {
+                "method": "GET",
+                "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Accept", "value": "application/json" }],
+                "url": { "raw": "{{base_url}}/me/website/profile", "host": ["{{base_url}}"], "path": ["me","website","profile"] }
+              }
+            },
+            {
+              "name": "GET — Skills",
+              "request": {
+                "method": "GET",
+                "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Accept", "value": "application/json" }],
+                "url": { "raw": "{{base_url}}/me/website/skills", "host": ["{{base_url}}"], "path": ["me","website","skills"] }
+              }
+            },
+            {
+              "name": "GET — Services",
+              "request": {
+                "method": "GET",
+                "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Accept", "value": "application/json" }],
+                "url": { "raw": "{{base_url}}/me/website/services", "host": ["{{base_url}}"], "path": ["me","website","services"] }
+              }
+            },
+            {
+              "name": "GET — Pengalaman",
+              "request": {
+                "method": "GET",
+                "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Accept", "value": "application/json" }],
+                "url": { "raw": "{{base_url}}/me/website/experiences", "host": ["{{base_url}}"], "path": ["me","website","experiences"] }
+              }
+            },
+            {
+              "name": "GET — Pendidikan",
+              "request": {
+                "method": "GET",
+                "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Accept", "value": "application/json" }],
+                "url": { "raw": "{{base_url}}/me/website/educations", "host": ["{{base_url}}"], "path": ["me","website","educations"] }
+              }
+            },
+            {
+              "name": "GET — Portfolio",
+              "request": {
+                "method": "GET",
+                "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Accept", "value": "application/json" }],
+                "url": { "raw": "{{base_url}}/me/website/portfolios", "host": ["{{base_url}}"], "path": ["me","website","portfolios"] }
+              }
+            },
+            {
+              "name": "GET — Testimonial",
+              "request": {
+                "method": "GET",
+                "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Accept", "value": "application/json" }],
+                "url": { "raw": "{{base_url}}/me/website/testimonials", "host": ["{{base_url}}"], "path": ["me","website","testimonials"] }
+              }
+            },
+            {
+              "name": "GET — Social Links",
+              "request": {
+                "method": "GET",
+                "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Accept", "value": "application/json" }],
+                "url": { "raw": "{{base_url}}/me/website/social-links", "host": ["{{base_url}}"], "path": ["me","website","social-links"] }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -30,7 +30,11 @@ class AppServiceProvider extends ServiceProvider
 	    if(env('FORCE_HTTPS',false)) {
 		    URL::forceScheme('https');
 	    }
-        view()->share('categories', Category::get());
+        try {
+            view()->share('categories', Category::get());
+        } catch (\Exception $e) {
+            view()->share('categories', collect());
+        }
 
         Paginator::useBootstrap();
     }

@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class, // Updated middleware alias
         'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
+        'website.access' => \App\Http\Middleware\WebsiteAccess::class,
     ];
 }

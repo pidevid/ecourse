@@ -73,6 +73,7 @@ class CourseController extends Controller
             'demo' => $request->demo,
             'category_id' => $request->category_id,
             'discount' => $request->discount,
+            'status' => 'pending',
         ]);
         // kembali kehalaman admin/course/index dengan membawa toastr.
         return redirect(route('member.course.index'))->with('toast_success', 'Course Created');
@@ -110,6 +111,7 @@ class CourseController extends Controller
             'demo' => $request->demo,
             'category_id' => $request->category_id,
             'discount' => $request->discount,
+            'status' => 'pending',
         ]);
 
         // cek apakah user mengirimkan request file image.

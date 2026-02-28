@@ -194,6 +194,74 @@
                             </p>
                         </a>
                     </li>
+                    <li class="nav-header">PERSONAL WEBSITE</li>
+                    <li class="nav-item {{ Route::is('member.website*') ? 'menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ active('member.website*') }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-world nav-icon"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="1.25" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <circle cx="12" cy="12" r="9"></circle>
+                                <line x1="3.6" y1="9" x2="20.4" y2="9"></line>
+                                <line x1="3.6" y1="15" x2="20.4" y2="15"></line>
+                                <path d="M11.5 3a17 17 0 0 0 0 18"></path>
+                                <path d="M12.5 3a17 17 0 0 1 0 18"></path>
+                            </svg>
+                            <p>Personal Website <i class="right fas fa-angle-left"></i></p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('member.website.index') }}" class="nav-link {{ active('member.website.index') }}">
+                                    <i class="far fa-circle nav-icon"></i><p>Dashboard</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('member.website.profile') }}" class="nav-link {{ active('member.website.profile') }}">
+                                    <i class="far fa-circle nav-icon"></i><p>Profile</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('member.website.skills') }}" class="nav-link {{ active('member.website.skills') }}">
+                                    <i class="far fa-circle nav-icon"></i><p>Skills</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('member.website.services') }}" class="nav-link {{ active('member.website.services') }}">
+                                    <i class="far fa-circle nav-icon"></i><p>Services</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('member.website.experience') }}" class="nav-link {{ active('member.website.experience') }}">
+                                    <i class="far fa-circle nav-icon"></i><p>Experience</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('member.website.education') }}" class="nav-link {{ active('member.website.education') }}">
+                                    <i class="far fa-circle nav-icon"></i><p>Education</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('member.website.portfolio') }}" class="nav-link {{ active('member.website.portfolio') }}">
+                                    <i class="far fa-circle nav-icon"></i><p>Portfolio</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('member.website.testimonials') }}" class="nav-link {{ active('member.website.testimonials') }}">
+                                    <i class="far fa-circle nav-icon"></i><p>Testimonials</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('member.website.social') }}" class="nav-link {{ active('member.website.social') }}">
+                                    <i class="far fa-circle nav-icon"></i><p>Social Links</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('member.website.settings') }}" class="nav-link {{ active('member.website.settings') }}">
+                                    <i class="far fa-circle nav-icon"></i><p>Settings</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 @endrole
                 @role('member|author')
                     <li class="nav-header">DASHBOARD</li>
@@ -316,6 +384,74 @@
                                 Transaction
                             </p>
                         </a>
+                    </li>
+                    <li class="nav-header">PERSONAL WEBSITE</li>
+                    <li class="nav-item {{ Route::is('member.website*') ? 'menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ active('member.website*') }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-world nav-icon"
+                                width="24" height="24" viewBox="0 0 24 24" stroke-width="1.25" stroke="currentColor"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <circle cx="12" cy="12" r="9"></circle>
+                                <line x1="3.6" y1="9" x2="20.4" y2="9"></line>
+                                <line x1="3.6" y1="15" x2="20.4" y2="15"></line>
+                                <path d="M11.5 3a17 17 0 0 0 0 18"></path>
+                                <path d="M12.5 3a17 17 0 0 1 0 18"></path>
+                            </svg>
+                            <p>Personal Website <i class="right fas fa-angle-left"></i></p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('member.website.index') }}" class="nav-link {{ active('member.website.index') }}">
+                                    <i class="far fa-circle nav-icon"></i><p>Dashboard</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('member.website.profile') }}" class="nav-link {{ active('member.website.profile') }}">
+                                    <i class="far fa-circle nav-icon"></i><p>Profile</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('member.website.skills') }}" class="nav-link {{ active('member.website.skills') }}">
+                                    <i class="far fa-circle nav-icon"></i><p>Skills</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('member.website.services') }}" class="nav-link {{ active('member.website.services') }}">
+                                    <i class="far fa-circle nav-icon"></i><p>Services</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('member.website.experience') }}" class="nav-link {{ active('member.website.experience') }}">
+                                    <i class="far fa-circle nav-icon"></i><p>Experience</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('member.website.education') }}" class="nav-link {{ active('member.website.education') }}">
+                                    <i class="far fa-circle nav-icon"></i><p>Education</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('member.website.portfolio') }}" class="nav-link {{ active('member.website.portfolio') }}">
+                                    <i class="far fa-circle nav-icon"></i><p>Portfolio</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('member.website.testimonials') }}" class="nav-link {{ active('member.website.testimonials') }}">
+                                    <i class="far fa-circle nav-icon"></i><p>Testimonials</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('member.website.social') }}" class="nav-link {{ active('member.website.social') }}">
+                                    <i class="far fa-circle nav-icon"></i><p>Social Links</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('member.website.settings') }}" class="nav-link {{ active('member.website.settings') }}">
+                                    <i class="far fa-circle nav-icon"></i><p>Settings</p>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="nav-header">CONFIGURATION</li>
                     <li class="nav-item">
