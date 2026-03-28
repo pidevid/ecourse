@@ -1,0 +1,552 @@
+{
+  "info": {
+    "name": "eCourse API",
+    "description": "Koleksi lengkap API untuk aplikasi eCourse Laravel\n\n## Setup\n1. Set variable `base_url` ke `http://localhost:8080`\n2. Setelah login, token akan otomatis tersimpan ke variable `token`\n\n## Auth\nSemua request ke `/api/me/*` membutuhkan Bearer Token",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8080", "type": "string" },
+    { "key": "token", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/auth/register", "host": ["{{base_url}}"], "path": ["api","auth","register"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\",\n  \"password_confirmation\": \"password123\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.token) {",
+                  "  pm.collectionVariables.set('token', res.data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/auth/login", "host": ["{{base_url}}"], "path": ["api","auth","login"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/auth/logout", "host": ["{{base_url}}"], "path": ["api","auth","logout"] }
+          }
+        },
+        {
+          "name": "Me (Current User)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/auth/me", "host": ["{{base_url}}"], "path": ["api","auth","me"] }
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/auth/forgot-password", "host": ["{{base_url}}"], "path": ["api","auth","forgot-password"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/auth/reset-password", "host": ["{{base_url}}"], "path": ["api","auth","reset-password"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"reset_token_here\",\n  \"email\": \"john@example.com\",\n  \"password\": \"newpassword123\",\n  \"password_confirmation\": \"newpassword123\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        },
+        {
+          "name": "Resend Email Verification",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/auth/email/resend", "host": ["{{base_url}}"], "path": ["api","auth","email","resend"] }
+          }
+        },
+        {
+          "name": "Social Auth - Redirect (Google)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/auth/google/redirect", "host": ["{{base_url}}"], "path": ["api","auth","google","redirect"] }
+          }
+        },
+        {
+          "name": "Social Auth - Token Login (Google)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/auth/google/token", "host": ["{{base_url}}"], "path": ["api","auth","google","token"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"access_token\": \"google_access_token_here\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Public",
+      "item": [
+        {
+          "name": "Get Categories",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/categories", "host": ["{{base_url}}"], "path": ["api","categories"] }
+          }
+        },
+        {
+          "name": "Get Courses",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": {
+              "raw": "{{base_url}}/api/courses?search=&category=",
+              "host": ["{{base_url}}"],
+              "path": ["api","courses"],
+              "query": [
+                { "key": "search", "value": "", "description": "Filter by keyword" },
+                { "key": "category", "value": "", "description": "Filter by category slug" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Course Detail",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/courses/:slug", "host": ["{{base_url}}"], "path": ["api","courses",":slug"], "variable": [{ "key": "slug", "value": "nama-kursus" }] }
+          }
+        },
+        {
+          "name": "Get Showcases",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": {
+              "raw": "{{base_url}}/api/showcases?search=",
+              "host": ["{{base_url}}"],
+              "path": ["api","showcases"],
+              "query": [{ "key": "search", "value": "" }]
+            }
+          }
+        },
+        {
+          "name": "Get Portfolio by Username",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/api/portfolio/:username", "host": ["{{base_url}}"], "path": ["api","portfolio",":username"], "variable": [{ "key": "username", "value": "johndoe" }] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Me - Profile & Dashboard",
+      "item": [
+        {
+          "name": "Get My Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/me", "host": ["{{base_url}}"], "path": ["api","me"] }
+          }
+        },
+        {
+          "name": "Get My Website Info",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/me/website", "host": ["{{base_url}}"], "path": ["api","me","website"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Me - Enrolled Courses",
+      "item": [
+        {
+          "name": "Get Enrolled Courses",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/me/enrolled", "host": ["{{base_url}}"], "path": ["api","me","enrolled"] }
+          }
+        },
+        {
+          "name": "Get Enrolled Course Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/me/enrolled/:id", "host": ["{{base_url}}"], "path": ["api","me","enrolled",":id"], "variable": [{ "key": "id", "value": "1" }] }
+          }
+        },
+        {
+          "name": "Get My Courses (Author)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/me/courses", "host": ["{{base_url}}"], "path": ["api","me","courses"] }
+          }
+        },
+        {
+          "name": "Get Exams for Course",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/me/exams/:courseId", "host": ["{{base_url}}"], "path": ["api","me","exams",":courseId"], "variable": [{ "key": "courseId", "value": "1" }] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Me - Cart & Checkout",
+      "item": [
+        {
+          "name": "Get Cart",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/me/cart", "host": ["{{base_url}}"], "path": ["api","me","cart"] }
+          }
+        },
+        {
+          "name": "Add to Cart",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/me/cart/:courseId", "host": ["{{base_url}}"], "path": ["api","me","cart",":courseId"], "variable": [{ "key": "courseId", "value": "1" }] }
+          }
+        },
+        {
+          "name": "Remove from Cart",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/me/cart/:cartId", "host": ["{{base_url}}"], "path": ["api","me","cart",":cartId"], "variable": [{ "key": "cartId", "value": "1" }] }
+          }
+        },
+        {
+          "name": "Checkout",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/me/checkout", "host": ["{{base_url}}"], "path": ["api","me","checkout"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Nama Pemesan (opsional)\"\n}",
+              "options": { "raw": { "language": "json" } }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Me - Transactions",
+      "item": [
+        {
+          "name": "Get All Transactions",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/me/transactions", "host": ["{{base_url}}"], "path": ["api","me","transactions"] }
+          }
+        },
+        {
+          "name": "Get Transaction Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/me/transactions/:id", "host": ["{{base_url}}"], "path": ["api","me","transactions",":id"], "variable": [{ "key": "id", "value": "1" }] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Me - Certificates & Scores",
+      "item": [
+        {
+          "name": "Get Certificates",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/me/certificates", "host": ["{{base_url}}"], "path": ["api","me","certificates"] }
+          }
+        },
+        {
+          "name": "Get Exam Scores",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/me/exam-scores", "host": ["{{base_url}}"], "path": ["api","me","exam-scores"] }
+          }
+        },
+        {
+          "name": "Get Reviews",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/me/reviews", "host": ["{{base_url}}"], "path": ["api","me","reviews"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Me - Showcases",
+      "item": [
+        {
+          "name": "Get My Showcases",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/me/showcases", "host": ["{{base_url}}"], "path": ["api","me","showcases"] }
+          }
+        },
+        {
+          "name": "Create Showcase",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/me/showcases", "host": ["{{base_url}}"], "path": ["api","me","showcases"] },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "title", "value": "Judul Showcase", "type": "text" },
+                { "key": "description", "value": "Deskripsi proyek", "type": "text" },
+                { "key": "link", "value": "https://github.com/username/repo", "type": "text" },
+                { "key": "cover", "type": "file", "description": "Image max 2MB" },
+                { "key": "course_id", "value": "", "type": "text", "description": "Optional - ID kursus terkait" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Showcase",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/me/showcases/:id", "host": ["{{base_url}}"], "path": ["api","me","showcases",":id"], "variable": [{ "key": "id", "value": "1" }] },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "title", "value": "Judul Update", "type": "text" },
+                { "key": "description", "value": "Deskripsi update", "type": "text" },
+                { "key": "link", "value": "https://github.com/username/repo", "type": "text" },
+                { "key": "cover", "type": "file", "description": "Optional - ganti cover" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Showcase",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/me/showcases/:id", "host": ["{{base_url}}"], "path": ["api","me","showcases",":id"], "variable": [{ "key": "id", "value": "1" }] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Me - Personal Website",
+      "item": [
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/me/website/profile", "host": ["{{base_url}}"], "path": ["api","me","website","profile"] }
+          }
+        },
+        {
+          "name": "Get Skills",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/me/website/skills", "host": ["{{base_url}}"], "path": ["api","me","website","skills"] }
+          }
+        },
+        {
+          "name": "Get Services",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/me/website/services", "host": ["{{base_url}}"], "path": ["api","me","website","services"] }
+          }
+        },
+        {
+          "name": "Get Experiences",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/me/website/experiences", "host": ["{{base_url}}"], "path": ["api","me","website","experiences"] }
+          }
+        },
+        {
+          "name": "Get Educations",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/me/website/educations", "host": ["{{base_url}}"], "path": ["api","me","website","educations"] }
+          }
+        },
+        {
+          "name": "Get Portfolios",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/me/website/portfolios", "host": ["{{base_url}}"], "path": ["api","me","website","portfolios"] }
+          }
+        },
+        {
+          "name": "Get Testimonials",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/me/website/testimonials", "host": ["{{base_url}}"], "path": ["api","me","website","testimonials"] }
+          }
+        },
+        {
+          "name": "Get Social Links",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "{{base_url}}/api/me/website/social-links", "host": ["{{base_url}}"], "path": ["api","me","website","social-links"] }
+          }
+        }
+      ]
+    }
+  ]
+}
